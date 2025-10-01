@@ -1,6 +1,3 @@
-player. html
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,13 +14,14 @@ player. html
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
+            
             --plyr-color-main: #0ea5e9;
             --background-dark: #02040a;
             --border-color: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            height: 100svh; 
+            height: 100svh;
             display: flex;
             flex-direction: column;
             background-color: var(--background-dark);
@@ -100,9 +98,11 @@ player. html
             transition: opacity 0.4s ease;
         }
         .popup-card {
-            background-color: #1e293b; /* slate-800 */
+            background-color: #1e293b;
+            /* slate-800 */
             border: 1px solid var(--border-color);
-            border-radius: 1.5rem; /* 24px */
+            border-radius: 1.5rem;
+            /* 24px */
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             width: 90%;
             max-width: 400px;
@@ -146,22 +146,25 @@ player. html
     </main>
 
     <footer class="player-footer text-center">
-        <a href="https://t.me/+xdQNNePetGxjYjI1" target="_blank" class="telegram-btn inline-flex items-center justify-center w-full max-w-sm mx-auto px-6 py-3 rounded-lg font-semibold text-black hover:text-white">
+ 
+        <a href="https://t.me/The_Cricket_Corner" target="_blank" class="telegram-btn inline-flex items-center justify-center w-full max-w-sm mx-auto px-6 py-3 rounded-lg font-semibold text-black hover:text-white">
             <i class="fab fa-telegram-plane mr-3"></i> Join Telegram Channel
         </a>
     </footer>
     
     <div id="telegram-popup" class="popup-overlay">
         <div class="popup-card">
-            <div class="text-6xl mb-4 text-sky-400"><i class="fab fa-telegram"></i></div>
+            <div class="text-6xl mb-4 text-sky-400"><i class="fab fa-telegram-plane"></i></div>
+            
             <h3 class="text-2xl font-bold text-white mb-2">Never Miss a Match!</h3>
             <p class="text-slate-400 mb-6">
                 Join our Telegram channel for live updates and instant stream links.
             </p>
             <div class="flex flex-col gap-3">
-                <a href="https://t.me/+xdQNNePetGxjYjI1" target="_blank" id="popup-join-btn" class="popup-join-btn w-full text-center px-6 py-3 rounded-lg font-semibold text-white transition-transform transform hover:scale-105">
+                <a href="https://t.me/The_Cricket_Corner" target="_blank" id="popup-join-btn" class="popup-join-btn w-full text-center px-6 py-3 rounded-lg font-semibold text-white transition-transform transform hover:scale-105">
                     <i class="fas fa-rocket mr-2"></i>Join Now
                 </a>
+               
                 <button id="popup-close-btn" class="w-full text-center px-6 py-3 rounded-lg font-semibold text-slate-300 bg-slate-700 hover:bg-slate-600 transition-colors">
                     Maybe Later
                 </button>
@@ -172,20 +175,19 @@ player. html
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script>
+        const TELEGRAM_LINK = atob('aHR0cHM6Ly90Lm1lL1RoZV9Dcmlja2V0X0Nvcm5lcg==');
         const DATA_URL = 'https://raw.githubusercontent.com/Jitendra-unatti/fancode/refs/heads/main/data/fancode.json';
         const playerElement = document.getElementById('player');
         const shareLinksBtn = document.getElementById('share-links-btn');
         const matchTitleElem = document.getElementById('match-title');
-
+        
         async function getStreamAndMatchDetails(id, cdnKey) {
             try {
                 const res = await fetch(DATA_URL);
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                 const data = await res.json();
-                
                 const match = data.matches.find(m => String(m.match_id) === String(id));
                 if (!match) throw new Error("Match not found for ID: " + id);
-
                 const streamingCdn = { ...match.STREAMING_CDN };
                 delete streamingCdn.Primary_Playback_URL;
 
@@ -194,7 +196,6 @@ player. html
                     dai_stream: match.dai_stream,
                     ...streamingCdn
                 };
-
                 const streamUrl = sources[cdnKey];
                 if (streamUrl && streamUrl !== "Unavailable") {
                     return { streamUrl, match };
@@ -211,6 +212,7 @@ player. html
             document.body.innerHTML = `
                 <div class="error-message">
                     <h2 class="text-2xl font-bold text-red-500 mb-4">Stream Error</h2>
+                   
                     <p class="text-slate-400">${message}</p>
                     <a href="index.html" class="mt-6 px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors">
                         Go Back Home
@@ -224,7 +226,10 @@ player. html
             const closeBtn = document.getElementById('popup-close-btn');
             const joinBtn = document.getElementById('popup-join-btn');
             const POPUP_KEY = 'playerTelegramPopupDismissed';
-
+            
+            // Set the join button's href using the constant
+            joinBtn.href = TELEGRAM_LINK;
+            
             // Don't show if already dismissed
             if (localStorage.getItem(POPUP_KEY)) {
                 return;
@@ -234,7 +239,7 @@ player. html
             setTimeout(() => {
                 popup.classList.add('show');
             }, 5000);
-
+            
             function dismissPopup() {
                 popup.classList.remove('show');
                 // Set flag in localStorage so it doesn't show again
@@ -255,6 +260,7 @@ player. html
 
             if (!id || !cdn) {
                 displayError("Missing match ID or CDN information in the URL.");
+  
                 return;
             }
 
@@ -262,6 +268,7 @@ player. html
 
             if (!streamUrl) {
                 displayError(`Sorry, this stream could not be loaded. It might be offline or unavailable.`);
+            
                 return;
             }
 
@@ -271,11 +278,12 @@ player. html
 
             shareLinksBtn.addEventListener('click', async () => {
                 const shareData = {
+  
                     title: `Watch: ${match?.title || 'Live Stream'}`,
                     text: `Watch "${match?.title || 'Live Stream'}" live!`,
                     url: window.location.href
                 };
-                try {
+            try {
                     if (navigator.share) {
                         await navigator.share(shareData);
                     } else {
@@ -287,7 +295,7 @@ player. html
                     alert('Could not share. Please copy the link manually.');
                 }
             });
-
+            
             try {
                 if (streamUrl.includes('.m3u8') && Hls.isSupported()) {
                     const hls = new Hls();
