@@ -1,6 +1,3 @@
-index. html
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +46,7 @@ index. html
         }
           .match-card img{
     object-position:top;
-          }
+    }
         
         .card-glow {
             position: absolute;
@@ -90,8 +87,10 @@ index. html
         }
 
         @keyframes pulse-live {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 15px #ef4444; }
-            50% { transform: scale(1.05); box-shadow: 0 0 25px #ef4444; }
+            0%, 100% { transform: scale(1);
+            box-shadow: 0 0 15px #ef4444; }
+            50% { transform: scale(1.05);
+            box-shadow: 0 0 25px #ef4444; }
         }
 
         /* --- General Animations --- */
@@ -134,7 +133,8 @@ index. html
         </p>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 pb-12">
+    <main class="max-w-7xl mx-auto 
+px-4 pb-12">
         <div id="spotlight-container"></div>
 
         <div class="mt-16 mb-8 px-2">
@@ -144,6 +144,7 @@ index. html
 
         <div id="matches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="h-64 bg-slate-800/50 rounded-xl animate-pulse"></div>
+    
             <div class="h-64 bg-slate-800/50 rounded-xl animate-pulse hidden md:block"></div>
             <div class="h-64 bg-slate-800/50 rounded-xl animate-pulse hidden lg:block"></div>
         </div>
@@ -152,42 +153,43 @@ index. html
     <div id="telegram-popup" class="popup-overlay fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
         <div class="popup-card w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900/80 shadow-2xl shadow-sky-500/10">
             <div class="p-8 text-center">
+      
                 <div class="text-5xl mb-4 text-sky-400"><i class="fab fa-telegram-plane"></i></div>
                 <h3 class="text-2xl font-bold text-white mb-2">Join Our Community</h3>
                 <p class="text-slate-400 mb-6">
                     Get instant match links, updates, and clips directly on Telegram.
                 </p>
                 <div class="flex flex-col gap-3">
-                    <a href="https://t.me/+xdQNNePetGxjYjI1" target="_blank" id="join-btn" class="w-full text-center px-6 py-3 rounded-lg font-semibold text-black bg-sky-400 hover:bg-sky-300 transition-all duration-300 transform hover:scale-105">
+                    <a href="https://t.me/The_Cricket_Corner" target="_blank" id="join-btn" class="w-full text-center px-6 py-3 rounded-lg font-semibold text-black bg-sky-400 hover:bg-sky-300 transition-all duration-300 transform hover:scale-105">
                         <i class="fas fa-rocket mr-2"></i>Join Now
+                 
                     </a>
                     <button id="close-popup-btn" class="w-full text-center px-6 py-3 rounded-lg font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors duration-300">
                         Already Joined
                     </button>
                 </div>
+    
             </div>
         </div>
     </div>
 
 
     <script>
+        const TELEGRAM_LINK = atob('aHR0cHM6Ly90Lm1lL1RoZV9Dcmlja2V0X0Nvcm5lcg==');
         const spotlightContainer = document.getElementById('spotlight-container');
         const gridContainer = document.getElementById('matches-grid');
         const DATA_URL = 'https://raw.githubusercontent.com/Jitendra-unatti/fancode/refs/heads/main/data/fancode.json';
         const PLAY_BASE = 'player.html';
-
         async function fetchAndRender() {
             try {
                 const res = await fetch(DATA_URL);
                 const data = await res.json();
                 let matches = Array.isArray(data.matches) ? data.matches : [];
-
                 matches.sort((a, b) => {
                     const aIsLive = a.status?.toUpperCase() === 'LIVE';
                     const bIsLive = b.status?.toUpperCase() === 'LIVE';
                     return bIsLive - aIsLive;
                 });
-
                 gridContainer.innerHTML = '';
 
                 const firstLiveMatch = matches.find(m => m.status?.toUpperCase() === 'LIVE');
@@ -199,6 +201,7 @@ index. html
                 if (matches.length > 0) {
                     matches.forEach((match, index) => {
                         const card = createMatchCard(match);
+                       
                         card.style.animationDelay = `${index * 100}ms`;
                         gridContainer.appendChild(card);
                     });
@@ -207,7 +210,6 @@ index. html
                 }
                 
                 initInteractiveEffects();
-
             } catch (error) {
                 console.error("Failed to load match data:", error);
                 gridContainer.innerHTML = `<p class="col-span-full text-center text-red-400">Could not load matches. Please check your connection and try again.</p>`;
@@ -215,24 +217,31 @@ index. html
         }
 
         function renderSpotlight(match) {
-            const imgSrc = match.image || 'https://fancode.com/skillup-uploads/cms-media/Cricket_Fallback_Old_match-card.jpg';
+            const imgSrc = match.image ||
+'https://fancode.com/skillup-uploads/cms-media/Cricket_Fallback_Old_match-card.jpg';
             const buttonsHTML = generateButtons(match, 'text-sm px-5 py-2.5 rounded-lg');
 
             spotlightContainer.innerHTML = `
                 <div class="spotlight-card rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 items-center gap-8 p-6 md:p-8">
                     <div class="relative rounded-lg overflow-hidden aspect-video">
                         <img src="${imgSrc}" alt="${match.title}" class="w-full h-full object-cover">
+          
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                         <div class="spotlight-live-badge absolute top-4 left-4 text-xs font-bold px-3 py-1.5 rounded-full text-white shadow-lg">
                             <i class="fas fa-circle text-xs mr-1.5 animate-ping absolute opacity-75"></i>
+           
                             <i class="fas fa-circle text-xs mr-1.5"></i>
                             LIVE NOW
                         </div>
                     </div>
+      
                     <div class="flex flex-col justify-center">
-                        <p class="text-amber-400 font-semibold text-sm mb-1">${match.tournament || ''}</p>
-                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">${match.title || 'Live Match'}</h2>
-                        <p class="text-slate-400 text-sm mb-6">${match.language || ''}</p>
+                        <p class="text-amber-400 font-semibold text-sm mb-1">${match.tournament ||
+''}</p>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">${match.title ||
+'Live Match'}</h2>
+                        <p class="text-slate-400 text-sm mb-6">${match.language ||
+''}</p>
                         <div class="flex flex-wrap gap-3">${buttonsHTML}</div>
                     </div>
                 </div>
@@ -251,12 +260,16 @@ index. html
                 <div class="relative">
                     <div class="card-glow"></div>
                     <img src="${imgSrc}" alt="${match.title}" class="w-full h-48 object-cover">
-                    ${isLive ? `<span class="absolute top-3 left-3 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">LIVE</span>` : ''}
+                    ${isLive ?
+`<span class="absolute top-3 left-3 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">LIVE</span>` : ''}
                 </div>
                 <div class="p-5 flex flex-col flex-grow">
-                    <p class="text-amber-500 text-xs font-semibold mb-1">${match.tournament || ''}</p>
-                    <h3 class="text-lg font-bold text-slate-100 flex-grow mb-4">${match.title || 'Match Title'}</h3>
-                    <div class="flex flex-wrap gap-2">${buttonsHTML || '<p class="text-xs text-slate-500">Links coming soon...</p>'}</div>
+                    <p class="text-amber-500 text-xs font-semibold mb-1">${match.tournament ||
+''}</p>
+                    <h3 class="text-lg font-bold text-slate-100 flex-grow mb-4">${match.title ||
+'Match Title'}</h3>
+                    <div class="flex flex-wrap gap-2">${buttonsHTML ||
+'<p class="text-xs text-slate-500">Links coming soon...</p>'}</div>
                 </div>
             `;
             return card;
@@ -268,14 +281,13 @@ index. html
                 adfree_stream: match.adfree_stream,
                 dai_stream: match.dai_stream
             };
-            
             let buttons = '';
             const id = encodeURIComponent(String(match.match_id ?? ''));
-
             for (const [key, value] of Object.entries(streams)) {
                 // MODIFICATION: Added a check to skip 'Primary_Playback_URL'
                 if (value && value !== "Unavailable" && key.toLowerCase() !== 'language' && key !== 'Primary_Playback_URL') {
-                    const label = key.replace(/_/g, ' ').replace(/(cdn|stream)/i, '').trim().toUpperCase() || 'STREAM';
+                    const label = key.replace(/_/g, ' ').replace(/(cdn|stream)/i, '').trim().toUpperCase() ||
+'STREAM';
                     const href = `${PLAY_BASE}?id=${id}&cdn=${encodeURIComponent(key)}`;
                     buttons += `<a href="${href}" class="watch-btn text-center text-black font-semibold ${classes}">${label}</a>`;
                 }
@@ -290,16 +302,19 @@ index. html
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
+            
                     const y = e.clientY - rect.top;
                     
                     const rotateX = (y - rect.height / 2) / -15;
                     const rotateY = (x - rect.width / 2) / 15;
+         
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                     
                     glow.style.setProperty('--x', `${x}px`);
                     glow.style.setProperty('--y', `${y}px`);
                 });
 
+    
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
                 });
@@ -311,7 +326,10 @@ index. html
             const closeBtn = document.getElementById('close-popup-btn');
             const joinBtn = document.getElementById('join-btn');
             const POPUP_KEY = 'telegramPopupDismissed';
-
+            
+            // Set the join button's href using the constant
+            joinBtn.href = TELEGRAM_LINK;
+            
             if (localStorage.getItem(POPUP_KEY)) {
                 return;
             }
@@ -319,7 +337,7 @@ index. html
             setTimeout(() => {
                 popup.classList.add('show');
             }, 3000);
-
+            
             function dismissPopup() {
                 popup.classList.remove('show');
                 localStorage.setItem(POPUP_KEY, 'true');
@@ -335,7 +353,6 @@ index. html
             fetchAndRender();
             handlePopup();
         });
-  
     </script>
 </body>
 </html>
